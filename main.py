@@ -106,7 +106,6 @@ def check_hori():
                 else:
                     count = 1
             if count == 4:
-                print('hori')
                 return True
 
 
@@ -121,7 +120,6 @@ def check_ver():
                 else:
                     count = 1
             if count == 4:
-                print("ver")
                 return True
 
 
@@ -136,7 +134,6 @@ def check_dia():
                     if board[row - i][item + (m * i)][1] != current_piece:
                         break
                 else: # no break
-                    print("dia")
                     return True
         m, a, b = -1, 3, 7
 
@@ -235,11 +232,12 @@ def end_game():
     run = True
     while run:
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                run = False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 main()
+            if event.type == pygame.QUIT:
+                run = False
     pygame.quit()
+    sys.exit()
 
 
 if __name__ == "__main__":

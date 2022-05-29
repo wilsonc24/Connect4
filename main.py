@@ -175,7 +175,7 @@ def main():
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN and piece.y == 50:
+                if (event.key == pygame.K_RETURN or event.key == pygame.K_s or event.key == pygame.K_DOWN) and piece.y == 50:
                     open_slot = 154
                     for row in board:
                         for item in row:

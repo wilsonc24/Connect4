@@ -21,9 +21,6 @@ RED_COIN = pygame.transform.scale(RED_COIN, (SIZE, SIZE))
 YELLOW_COIN = pygame.image.load('./assets/yellowcoin.png')
 YELLOW_COIN = pygame.transform.scale(YELLOW_COIN, (SIZE, SIZE))
 
-JELLYFISH = pygame.image.load('./assets/2.jpg')
-JELLYFISH = pygame.transform.scale(JELLYFISH, (WIDTH, HEIGHT))
-
 BOARD = pygame.image.load('./assets/board.png')
 
 global current_piece

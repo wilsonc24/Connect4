@@ -1,6 +1,8 @@
 import pygame
 import time
+import sys
 
+pygame.init()
 pygame.font.init()
 pygame.mixer.init()
 WIDTH = 1000
@@ -174,6 +176,7 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
+                sys.exit()
             if event.type == pygame.KEYDOWN:
                 if (event.key == pygame.K_RETURN or event.key == pygame.K_s or event.key == pygame.K_DOWN) and piece.y == 50:
                     open_slot = 154

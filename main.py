@@ -24,8 +24,8 @@ YELLOW_COIN = pygame.transform.scale(YELLOW_COIN, (SIZE, SIZE))
 
 BOARD = pygame.image.load('./assets/board.png')
 
-FALL_SOUND = pygame.mixer.Sound('./assets/fallsound.wav')
-WIN_SOUND = pygame.mixer.Sound('./assets/winsound.wav')
+FALL_SOUND = pygame.mixer.Sound('./assets/fallsound.mp3')
+WIN_SOUND = pygame.mixer.Sound('./assets/winsound.mp3')
 
 def set_up():
     global current_piece
@@ -220,7 +220,6 @@ def end_game():
         color = RED
     else:
         color = YELLOW
-    WIN_SOUND.play()
     text = WIN_FONT.render("CONNECT FOUR!", 1, color)
     WIN.blit(BOARD, (95, 128))
     for p in filled_pieces:
@@ -229,6 +228,7 @@ def end_game():
     subtext = WORD_FONT.render("(space to rematch)", 1, color)
     WIN.blit(subtext, (WIDTH/2 - subtext.get_width()/2, 80))
     pygame.display.update()
+    WIN_SOUND.play()
     run = True
     while run:
         for event in pygame.event.get():

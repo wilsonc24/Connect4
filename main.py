@@ -2,10 +2,11 @@ import pygame
 import time
 
 pygame.font.init()
+pygame.mixer.init()
 WIDTH = 1000
 HEIGHT = int(WIDTH * .7)
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
-pygame.display.set_caption("Connect4 Super")
+pygame.display.set_caption("Connect4Super")
 WORD_FONT = pygame.font.SysFont('comicsans', 35)
 WIN_FONT = pygame.font.SysFont('comicsans', 70)
 WHITE = (255, 255, 255)
@@ -23,11 +24,7 @@ YELLOW_COIN = pygame.transform.scale(YELLOW_COIN, (SIZE, SIZE))
 
 BOARD = pygame.image.load('./assets/board.png')
 
-global current_piece
-global board
-global filled_pieces
-global move_num
-
+FALL_SOUND = pygame.mixer.Sound('./assets/fallsound.wav')
 
 def set_up():
     global current_piece
@@ -164,7 +161,6 @@ def main():
     global board
     global filled_pieces
     global move_num
-    global pressed
     piece = pygame.Rect(451, 50, SIZE, SIZE)
     clock = pygame.time.Clock()
     if move_num % 2 == 0:
@@ -185,6 +181,7 @@ def main():
                             if item[0][0] == piece.x and item[1] is False and item[0][1] > open_slot:
                                 open_slot = item[0][1]
                     if open_slot > 154:
+                        FALL_SOUND.play()
                         while piece.y < open_slot:
                             piece.y += 10
                             piece_fall(piece)

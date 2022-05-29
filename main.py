@@ -25,6 +25,7 @@ YELLOW_COIN = pygame.transform.scale(YELLOW_COIN, (SIZE, SIZE))
 BOARD = pygame.image.load('./assets/board.png')
 
 FALL_SOUND = pygame.mixer.Sound('./assets/fallsound.wav')
+WIN_SOUND = pygame.mixer.Sound('./assets/winsound.wav')
 
 def set_up():
     global current_piece
@@ -219,6 +220,7 @@ def end_game():
         color = RED
     else:
         color = YELLOW
+    WIN_SOUND.play()
     text = WIN_FONT.render("CONNECT FOUR!", 1, color)
     WIN.blit(BOARD, (95, 128))
     for p in filled_pieces:

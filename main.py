@@ -48,13 +48,15 @@ def set_up():
         x_piece = 181
         y_piece += 87
 
-    '''
+
+def print_board():
+    global board
     for row in board:
         r = ""
         for item in row:
             r += " " + str(item)
         print(r)
-    '''
+
 
 def draw_window(piece):
     global move_num
@@ -95,21 +97,22 @@ def check_win():
 
 def check_hori():
     global board
-    for row in range(5, 0, -1):
+    for row in range(5, -1, -1):
         count = 1
-        for col in range(0, 7, 1):
+        for col in range(1, 7):
             if board[row][col][1] is not False:
                 if board[row][col - 1][1] == board[row][col][1]:
                     count += 1
                 else:
                     count = 1
             if count == 4:
+                print('hori')
                 return True
 
 
 def check_ver():
     global board
-    for col in range(0, 6, 1):
+    for col in range(0, 7, 1):
         count = 1
         for row in range(5, 0, -1):
             if board[row][col][1] is not False:
@@ -118,6 +121,7 @@ def check_ver():
                 else:
                     count = 1
             if count == 4:
+                print("ver")
                 return True
 
 
@@ -126,12 +130,13 @@ def check_dia():
     global current_piece
     m, a, b = 1, 0, 4
     for check in range(2):
-        for row in range(5, 4, -1):
+        for row in range(5, 2, -1):
             for item in range(a, b):
                 for i in range(4):
                     if board[row - i][item + (m * i)][1] != current_piece:
                         break
-                else:
+                else: # no break
+                    print("dia")
                     return True
         m, a, b = -1, 3, 7
 
@@ -159,39 +164,44 @@ def main():
     global board
     global filled_pieces
     global move_num
+    global pressed
     piece = pygame.Rect(451, 50, SIZE, SIZE)
     clock = pygame.time.Clock()
+    if move_num % 2 == 0:
+        current_piece = RED_COIN
+    else:
+        current_piece = YELLOW_COIN
     run = True
     while run:
         clock.tick(FPS)
-        if move_num % 2 == 0:
-            current_piece = RED_COIN
-        else:
-            current_piece = YELLOW_COIN
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_RETURN:
-                    open_slot = 155
+                if event.key == pygame.K_RETURN and piece.y == 50:
+                    open_slot = 154
                     for row in board:
                         for item in row:
                             if item[0][0] == piece.x and item[1] is False and item[0][1] > open_slot:
                                 open_slot = item[0][1]
-                    while piece.y < open_slot and open_slot > 155:
-                        piece.y += 10
-                        piece_fall(piece)
-                    pos = (piece.x, open_slot)
-                    filled_pieces.append([pos, current_piece])
-                    for i in board:
-                        for j in i:
-                            if pos == j[0]:
-                                j[1] = current_piece
-                    piece.y = 50
-                    move_num += 1
-                    if check_win():
-                        run = False
-                        break
+                    if open_slot > 154:
+                        while piece.y < open_slot:
+                            piece.y += 10
+                            piece_fall(piece)
+                        pos = (piece.x, open_slot)
+                        filled_pieces.append([pos, current_piece])
+                        for i in board:
+                            for j in i:
+                                if pos == j[0]:
+                                    j[1] = current_piece
+                        if check_win():
+                            end_game()
+                        piece.y = 50
+                        move_num += 1
+                        if move_num % 2 == 0:
+                            current_piece = RED_COIN
+                        else:
+                            current_piece = YELLOW_COIN
         keys_pressed = pygame.key.get_pressed()
         if (keys_pressed[pygame.K_a] or keys_pressed[pygame.K_LEFT]) and piece.x > 181:
             piece.x -= 90
@@ -202,8 +212,6 @@ def main():
         if run is not False:
             draw_window(piece)
     end_game()
-    main()
-    # pygame.quit()
 
 
 def end_game():

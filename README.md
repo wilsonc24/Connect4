@@ -1,2 +1,2 @@
 Connect4 Game
-All game assets made by me
+(all game assets made by me)

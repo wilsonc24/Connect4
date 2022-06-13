@@ -2,6 +2,7 @@ import pygame
 import time
 import sys
 
+#initial setup and assets
 pygame.init()
 pygame.font.init()
 pygame.mixer.init()
@@ -17,17 +18,15 @@ RED = (255, 0, 0)
 YELLOW = (255, 255, 0)
 FPS = 60
 SIZE = 75
-
 RED_COIN = pygame.image.load('./assets/redcoin.png')
 RED_COIN = pygame.transform.scale(RED_COIN, (SIZE, SIZE))
-
 YELLOW_COIN = pygame.image.load('./assets/yellowcoin.png')
 YELLOW_COIN = pygame.transform.scale(YELLOW_COIN, (SIZE, SIZE))
-
 BOARD = pygame.image.load('./assets/board.png')
-
 FALL_SOUND = pygame.mixer.Sound('./assets/fallsound.mp3')
 WIN_SOUND = pygame.mixer.Sound('./assets/winsound.mp3')
+pygame.display.set_icon(RED_COIN)
+
 
 def set_up():
     global current_piece
@@ -93,6 +92,15 @@ def piece_fall(piece):
 def check_win():
     if check_hori() or check_ver() or check_dia():
         return True
+
+
+def check_tie():
+    global board
+    for row in board:
+        for item in row:
+            if item[1] is False:
+                return False
+    return True
 
 
 def check_hori():
@@ -193,7 +201,9 @@ def main():
                                 if pos == j[0]:
                                     j[1] = current_piece
                         if check_win():
-                            end_game()
+                            end_game("CONNECT FOUR!")
+                        if check_tie():
+                            end_game("TIE", WHITE)
                         piece.y = 50
                         move_num += 1
                         if move_num % 2 == 0:
@@ -212,15 +222,17 @@ def main():
     end_game()
 
 
-def end_game():
+def end_game(text, text_color = None):
     global current_piece
     global filled_pieces
     WIN.fill(BLACK)
-    if current_piece == RED_COIN:
+    if text_color is not None:
+        color = text_color
+    elif current_piece == RED_COIN:
         color = RED
     else:
         color = YELLOW
-    text = WIN_FONT.render("CONNECT FOUR!", 1, color)
+    text = WIN_FONT.render(text, True, color)
     WIN.blit(BOARD, (95, 128))
     for p in filled_pieces:
         WIN.blit(p[1], (p[0][0], p[0][1]))
@@ -240,5 +252,4 @@ def end_game():
     sys.exit()
 
 
-if __name__ == "__main__":
-    main()
+main()
